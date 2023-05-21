@@ -1,27 +1,13 @@
-<?php
-include('connect.php');
+<?php 
 session_start();
+require('dbcon.php');
+$actquery = "INSERT INTO activitylog_tbl
+( user_id, user_fullname, activity, maintenance_id, date, time, role)
+ VALUE(?,?,?,?,?,?,?)";
+  $actprep = $pdocon -> prepare($actquery);
+  $actexe = $actprep ->
+  execute(array($_SESSION['id'],$_SESSION['fullname'],'Log out','log out',date('Y-m-d'),time(),$_SESSION['role'] ));
 
-
-$act="Log out";
-      $auditsql = "INSERT INTO audittb
-      (userId, username, activity, actdate, acttime) VALUE (?,?,?,?,?)";
-      $auditprep = $pdo_conn -> prepare($auditsql);
-      $auditexe = $auditprep-> execute(array($_SESSION["userId"], $_SESSION["username"], $act, date("d-m-y"), date("h:i:sa")));
-      
-      session_destroy();
-      header("location:Login.php");
+session_destroy();
+require("links.php")
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <?php echo $Logout;?>
-</body>
-</html>
